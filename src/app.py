@@ -5,11 +5,13 @@ import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
+from flask_jwt_extended import JWTManager
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from datetime import timedelta
 
 # from models import Person
 
@@ -33,6 +35,10 @@ db.init_app(app)
 
 # add the admin
 setup_admin(app)
+
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
+jwt = JWTManager(app)
 
 # add the admin
 setup_commands(app)
