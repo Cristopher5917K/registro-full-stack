@@ -11,8 +11,7 @@ export const register=async(userData)=>{
   try {
 
     // Selecciono la url del backend
-    const backend_url="https://zany-fortnight-v6g4gr666vr4hw69g-3001.app.github.dev/api"
-
+    const backend_url= import.meta.env.VITE_BACKEND_URL
     // Realizo la peticion al backend
     const response= await fetch(`${backend_url}/register`,{
       method:"POST",
@@ -59,6 +58,7 @@ export const login=async(userData)=>{
   }
 }
 
+// Creamos las funciones para manegar el logout del usuario y eliminar el token
 export const logout=()=>{
   try {
       localStorage.removeItem("token")
@@ -71,7 +71,7 @@ export const logout=()=>{
   
 }
 
-
+// Creamos la funcion para traer al usuario registrado
 export const getPrivate=async()=>{
   try {
     const backend_url="https://zany-fortnight-v6g4gr666vr4hw69g-3001.app.github.dev/api"

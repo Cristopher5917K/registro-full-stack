@@ -2,8 +2,11 @@ import React, { useContext, useEffect, useState } from "react"
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { login } from "../store.js";
+import Swal from 'sweetalert2'
 
 
+
+// Creamos el componente para el login
 const initalUser = {
     email: "",
     password: ""
@@ -11,8 +14,11 @@ const initalUser = {
 
 const Login = () => {
 
+
     const [user, setUser] = useState(initalUser)
     const navigate = useNavigate()
+
+    // Realizamos el handleChange para actualizar los inputs
     const handleChange = ({ target }) => {
         setUser({
             ...user,
@@ -20,16 +26,33 @@ const Login = () => {
         })
     }
 
+    // Realizamos en handleSubmit para manejar el evento de submit del formulario evitando que se reinicie
     const handleSubmit = async (event) => {
         event.preventDefault()
 
         try {
+            // Realizamos la lalamda al login para la peticion del backend
             const status = await login(user)
+
+            // En caso de exista el usuario regresara un 200 lo que nos llevara a la vista de la pagina
             if (status == 200) {
+
+                Swal.fire({
+                    title: "Login exitoso",
+                    text: "Login realizado correctamente",
+                    icon: "success"
+                });
                 navigate("/")
-                alert("Login exitoso")
+
+                // En caso de que no exista el usuario regrea un 401 y generara el mensaje de error
             } else if (status == 401) {
-                alert("Credenciales incorrectas")
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Credenciales incorrectas",
+
+                });
+
             }
         } catch (error) {
             console.log(error)
@@ -39,12 +62,14 @@ const Login = () => {
     }
 
     return (
-            <div className="container">
-            <div className="row justify-content-center">
-                <h1 className="text-center my-5">Login</h1>
+        <div className="container ">
+            <div className="row justify-content-center loginBackground">
+                <h1 className="text-center">Login</h1>
                 <div className="col-12 col-md-6">
+
+                    {/* Creamos el formulaio para el login con la opcion del handleSubmit y el handleChange */}
                     <form
-                        className="border p-3"
+                        className="border p-3 formLogin"
                         onSubmit={handleSubmit}
                     >
                         <div className="form-group">
@@ -70,7 +95,7 @@ const Login = () => {
                             />
                         </div>
                         <div className="mt-3">
-                            <button className="btn btn-primary w-100">Iniciar Sesión</button>
+                            <button className="btn  w-100">Iniciar Sesión</button>
                         </div>
                     </form>
                     <div className="text-center">

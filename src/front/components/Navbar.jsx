@@ -1,14 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
+    
+    // Creo la constante para navegar entre las rutas
 	const navigate=useNavigate()
 
+
+    // genero el logout que elimina el token y el usuario
 	const handleLogout = () => {
 		localStorage.removeItem("currentUser");
 		localStorage.removeItem("token")
 		navigate("/login");
 	}
 
+    // Verifico si esta logueado o no
 	const isLogged= localStorage.getItem("currentUser") !== null;
 	return (
 
@@ -19,12 +24,12 @@ export const Navbar = () => {
                 </Link>
                 <div className="ml-auto">
                     {isLogged ? (
-                        <button className="btn btn-danger mx-2" onClick={handleLogout}>
+                        <button className="btn-danger mx-2" onClick={handleLogout}>
                             LogOut
                         </button>
                     ) : (
                         <Link to="/register">
-                            <button className="btn btn-primary">Register</button>
+                            <button className="btn ">Register</button>
                         </Link>
                     )}
                 </div>
